@@ -15,7 +15,7 @@ def daily(cookies, scores):
     if scores["daily"] < const.daily_all:
         # driver_daily = Mydriver(nohead=nohead)  time.sleep(random.randint(5, 15))
         driver_daily = Mydriver(nohead=False)
-        driver_daily.driver.maximize_window()
+        # driver_daily.driver.maximize_window()
         print('请保持窗口最大化')
         print('请保持窗口最大化')
         print('请保持窗口最大化')
@@ -133,7 +133,7 @@ def weekly(cookies, scores):
     if scores["weekly"] < const.weekly_all:
         # driver_weekly = Mydriver(nohead=nohead)  time.sleep(random.randint(5, 15))
         driver_weekly = Mydriver(nohead=False)
-        driver_weekly.driver.maximize_window()
+        # driver_weekly.driver.maximize_window()
         print('请保持窗口最大化')
         print('请保持窗口最大化')
         print('请保持窗口最大化')
@@ -316,7 +316,7 @@ def zhuanxiang(cookies, scores):
     if scores["zhuanxiang"] < const.zhuanxiang_all:
         # driver_zhuanxiang = Mydriver(nohead=nohead)  time.sleep(random.randint(5, 15))
         driver_zhuanxiang = Mydriver(nohead=False)
-        driver_zhuanxiang.driver.maximize_window()
+        # driver_zhuanxiang.driver.maximize_window()
         print('请保持窗口最大化')
         print('请保持窗口最大化')
         print('请保持窗口最大化')

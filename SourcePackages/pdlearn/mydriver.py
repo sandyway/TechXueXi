@@ -49,9 +49,15 @@ class Mydriver:
                 self.options.add_argument('--no-sandbox')
             self.options.add_argument('--mute-audio')  # 关闭声音
             # self.options.add_argument('--window-size=400,500')
-            self.options.add_argument('--window-size=750,450')
+            # self.options.add_argument('--window-size=750,450')
             # self.options.add_argument('--window-size=900,800')
-            self.options.add_argument('--window-position=700,0')
+            # self.options.add_argument('--window-position=700,0')
+
+            self.options.add_argument("disable-infobars")
+            self.options.add_argument("--start-maximized")
+            self.options.add_argument("--disable-extensions")
+            self.options.add_argument('--window-size=2560,1600')
+
             self.options.add_argument('--log-level=3')
 
             self.options.add_argument('--user-agent={}'.format(user_agent.getheaders()))
