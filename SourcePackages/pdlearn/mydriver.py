@@ -21,6 +21,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
+import platform
 
 class title_of_login:
     def __call__(self, driver):
@@ -69,20 +70,29 @@ class Mydriver:
             self.options.add_argument("--disable-blink-features")
             self.options.add_argument("--disable-blink-features=AutomationControlled")
             self.webdriver = webdriver
-            if os.path.exists("./chrome/chromedriver.exe"):  # win
-                self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
+
+            cur_path = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+            platform_system = platform.system()
+            chrome_driver_platform_name = 'chromedriver.exe' if platform_system == 'Windows' else \
+                ('chromedriver-mac' if platform_system == 'Darwin' else 'chromedriver-linux64')
+            chrome_driver_path = os.path.join(cur_path, f'../chrome-driver/{chrome_driver_platform_name}')
+            self.driver = self.webdriver.Chrome(executable_path=chrome_driver_path,
                                                     chrome_options=self.options)
-            elif os.path.exists("./chromedriver"):  # linux
-                self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
-                                                    chrome_options=self.options)
-            elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # linux 包安装chromedriver
-                self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
-                                                    chrome_options=self.options)
-            elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
-                self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
-                                                    chrome_options=self.options)
-            else:
-                self.driver = self.webdriver.Chrome(chrome_options=self.options)
+
+            # if os.path.exists("./chrome/chromedriver.exe"):  # win
+            #     self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
+            #                                         chrome_options=self.options)
+            # elif os.path.exists("./chromedriver"):  # linux
+            #     self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
+            #                                         chrome_options=self.options)
+            # elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # linux 包安装chromedriver
+            #     self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
+            #                                         chrome_options=self.options)
+            # elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
+            #     self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
+            #                                         chrome_options=self.options)
+            # else:
+            #     self.driver = self.webdriver.Chrome(chrome_options=self.options)
         except:
             print("=" * 60)
             print("Mydriver初始化失败")
