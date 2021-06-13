@@ -22,7 +22,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
-import platform
 
 class title_of_login:
     def __call__(self, driver):
@@ -53,15 +52,9 @@ class Mydriver:
                 self.options.add_argument('--no-sandbox')
             self.options.add_argument('--mute-audio')  # 关闭声音
             # self.options.add_argument('--window-size=400,500')
-            # self.options.add_argument('--window-size=750,450')
+            self.options.add_argument('--window-size=750,450')
             # self.options.add_argument('--window-size=900,800')
-            # self.options.add_argument('--window-position=700,0')
-
-            self.options.add_argument("disable-infobars")
-            self.options.add_argument("--start-maximized")
-            self.options.add_argument("--disable-extensions")
-            self.options.add_argument('--window-size=2560,1600')
-
+            self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
 
             self.options.add_argument('--user-agent={}'.format(user_agent.getheaders()))
@@ -71,29 +64,20 @@ class Mydriver:
             self.options.add_argument("--disable-blink-features")
             self.options.add_argument("--disable-blink-features=AutomationControlled")
             self.webdriver = webdriver
-
-            cur_path = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-            platform_system = platform.system()
-            chrome_driver_platform_name = 'chromedriver.exe' if platform_system == 'Windows' else \
-                ('chromedriver-mac' if platform_system == 'Darwin' else 'chromedriver-linux64')
-            chrome_driver_path = os.path.join(cur_path, f'../chrome-driver/{chrome_driver_platform_name}')
-            self.driver = self.webdriver.Chrome(executable_path=chrome_driver_path,
+            if os.path.exists("./chrome/chromedriver.exe"):  # win
+                self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
                                                     chrome_options=self.options)
-
-            # if os.path.exists("./chrome/chromedriver.exe"):  # win
-            #     self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
-            #                                         chrome_options=self.options)
-            # elif os.path.exists("./chromedriver"):  # linux
-            #     self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
-            #                                         chrome_options=self.options)
-            # elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # linux 包安装chromedriver
-            #     self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
-            #                                         chrome_options=self.options)
-            # elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
-            #     self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
-            #                                         chrome_options=self.options)
-            # else:
-            #     self.driver = self.webdriver.Chrome(chrome_options=self.options)
+            elif os.path.exists("./chromedriver"):  # linux
+                self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
+                                                    chrome_options=self.options)
+            elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # linux 包安装chromedriver
+                self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
+                                                    chrome_options=self.options)
+            elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
+                self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
+                                                    chrome_options=self.options)
+            else:
+                self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",chrome_options=self.options)
         except:
             print("=" * 60)
             print("Mydriver初始化失败")
@@ -227,27 +211,23 @@ class Mydriver:
         # global answer
         content = ""
         try:
-            have_content = 0 #页面上没有加载提示的内容
-            have_content = self.driver.find_element_by_css_selector(".ant-popover")
-        except selenium.common.exceptions.NoSuchElementException as e: #如果是没有加载，点一下查看提示
-            try:
-                # tips_open = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/span')
-                tips_open = self.driver.find_element_by_xpath(
-                    '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/div[*]/span[contains(text(), "查看提示")]')
-                tips_open.click()
-                print("有可点击的【查看提示】按钮")
-            except Exception as e:
-                print("没有可点击的【查看提示】按钮")
-                return ""
-            time.sleep(1)
-            try:
-                # tips_open = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/span')
-                tips_open = self.driver.find_element_by_xpath(
-                    '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/div[*]/span[contains(text(), "查看提示")]')
-                tips_open.click()
-            except Exception as e:
-                print("关闭查看提示失败！没有可点击的【查看提示】按钮")
-                return ""
+            # tips_open = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/span')
+            tips_open = self.driver.find_element_by_xpath(
+                '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/div[*]/span[contains(text(), "查看提示")]')
+            tips_open.click()
+            print("有可点击的【查看提示】按钮")
+        except Exception as e:
+            print("没有可点击的【查看提示】按钮")
+            return [],""
+        time.sleep(1)
+        try:
+            # tips_open = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/span')
+            tips_open = self.driver.find_element_by_xpath(
+                '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/div[*]/span[contains(text(), "查看提示")]')
+            tips_open.click()
+        except Exception as e:
+            print("关闭查看提示失败！没有可点击的【查看提示】按钮")
+            return [],""
         tip_div = self.driver.find_element_by_css_selector(".ant-popover .line-feed")
         tip_full_text = tip_div.get_attribute('innerHTML')
         html = tip_full_text
@@ -267,7 +247,7 @@ class Mydriver:
         except Exception as e:
             print('无法处理提示内容，请检查日志.')
             print(e)
-            return ""
+            return [],""
         time.sleep(1)
         try:
             display_tip = 0 #页面上没有加载提示的内容
