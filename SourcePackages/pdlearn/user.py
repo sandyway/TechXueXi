@@ -41,10 +41,9 @@ def get_fullname(userId):
         while True:
             input_name = input("将为此 userId 添加一个新用户。请输入此用户昵称：")
 
-            if (pattern.search(input_name) != None):
-
-        save_fullname(str(userId) + '_' + input_name)
-        return get_fullname(userId)
+        if (pattern.search(input_name) != None):
+            save_fullname(str(userId) + '_' + input_name)
+            return get_fullname(userId)
     return fullname
 
 
@@ -63,9 +62,9 @@ def save_fullname(fullname):
 
 
 def get_user_status():
-                        '''\n    "#-说明3":"如不熟悉，请勿自行修改内容。错误修改可能导致程序崩溃",''' + \
-                        '''\n    "#____________________________________________________________":"",''' + \
-                        '''\n    "last_userId":0,\n    "userId_mapping":{\n        "0":"default"\n    }\n}'''
+    '''\n    "#-说明3":"如不熟悉，请勿自行修改内容。错误修改可能导致程序崩溃",''' + \
+    '''\n    "#____________________________________________________________":"",''' + \
+    '''\n    "last_userId":0,\n    "userId_mapping":{\n        "0":"default"\n    }\n}'''
     status = file.get_json_data("user/user_status.json", template_json_str)
     save_user_status(status)
     # print(status)
